@@ -47,12 +47,14 @@ public class runonSentence : MonoBehaviour
 
     public class CellInfo : IEquatable<CellInfo>
     {
+        public int Index;
         public CellColor Color;
         public CellPattern Pattern;
         public CellShape Shape;
 
-        public CellInfo(CellColor color, CellPattern pattern, CellShape shape)
+        public CellInfo(int index, CellColor color, CellPattern pattern, CellShape shape)
         {
+            Index = index;
             Color = color;
             Pattern = pattern;
             Shape = shape;
@@ -76,70 +78,70 @@ public class runonSentence : MonoBehaviour
 
     private static readonly CellInfo[] _cellinfos = new CellInfo[]
     {
-        new CellInfo(CellColor.White, CellPattern.Filled, CellShape.Cross),
-        new CellInfo(CellColor.Black, CellPattern.Stripes, CellShape.Cross),
-        new CellInfo(CellColor.DarkGray, CellPattern.Empty, CellShape.Circle),
-        new CellInfo(CellColor.Black, CellPattern.Checkered, CellShape.Circle),
-        new CellInfo(CellColor.Black, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(CellColor.Black, CellPattern.Empty, CellShape.Square),
-        new CellInfo(CellColor.DarkGray, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(CellColor.LightGray, CellPattern.Stripes, CellShape.Square),
-        new CellInfo(CellColor.White, CellPattern.Stripes, CellShape.Circle),
-        new CellInfo(CellColor.Black, CellPattern.Stripes, CellShape.Triangle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Empty, CellShape.Square),
-        new CellInfo(CellColor.LightGray, CellPattern.Empty, CellShape.Circle),
-        new CellInfo(CellColor.White, CellPattern.Filled, CellShape.Triangle),
-        new CellInfo(CellColor.White, CellPattern.Checkered, CellShape.Square),
-        new CellInfo(CellColor.Black, CellPattern.Checkered, CellShape.Square),
-        new CellInfo(CellColor.DarkGray, CellPattern.Filled, CellShape.Cross),
-        new CellInfo(CellColor.White, CellPattern.Empty, CellShape.Square),
-        new CellInfo(CellColor.LightGray, CellPattern.Filled, CellShape.Square),
-        new CellInfo(CellColor.LightGray, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(CellColor.LightGray, CellPattern.Stripes, CellShape.Triangle),
-        new CellInfo(CellColor.White, CellPattern.Checkered, CellShape.Circle),
-        new CellInfo(CellColor.LightGray, CellPattern.Filled, CellShape.Triangle),
-        new CellInfo(CellColor.LightGray, CellPattern.Stripes, CellShape.Circle),
-        new CellInfo(CellColor.LightGray, CellPattern.Checkered, CellShape.Square),
-        new CellInfo(CellColor.White, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(CellColor.Black, CellPattern.Stripes, CellShape.Circle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Checkered, CellShape.Circle),
-        new CellInfo(CellColor.LightGray, CellPattern.Filled, CellShape.Circle),
-        new CellInfo(CellColor.White, CellPattern.Empty, CellShape.Triangle),
-        new CellInfo(CellColor.Black, CellPattern.Filled, CellShape.Square),
-        new CellInfo(CellColor.White, CellPattern.Stripes, CellShape.Square),
-        new CellInfo(CellColor.LightGray, CellPattern.Filled, CellShape.Cross),
-        new CellInfo(CellColor.Black, CellPattern.Empty, CellShape.Triangle),
-        new CellInfo(CellColor.White, CellPattern.Empty, CellShape.Circle),
-        new CellInfo(CellColor.White, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Stripes, CellShape.Triangle),
-        new CellInfo(CellColor.White, CellPattern.Checkered, CellShape.Cross),
-        new CellInfo(CellColor.LightGray, CellPattern.Stripes, CellShape.Cross),
-        new CellInfo(CellColor.LightGray, CellPattern.Checkered, CellShape.Cross),
-        new CellInfo(CellColor.White, CellPattern.Stripes, CellShape.Triangle),
-        new CellInfo(CellColor.Black, CellPattern.Checkered, CellShape.Cross),
-        new CellInfo(CellColor.DarkGray, CellPattern.Checkered, CellShape.Cross),
-        new CellInfo(CellColor.LightGray, CellPattern.Empty, CellShape.Square),
-        new CellInfo(CellColor.White, CellPattern.Filled, CellShape.Circle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Empty, CellShape.Triangle),
-        new CellInfo(CellColor.Black, CellPattern.Filled, CellShape.Circle),
-        new CellInfo(CellColor.LightGray, CellPattern.Checkered, CellShape.Circle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Filled, CellShape.Triangle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Filled, CellShape.Square),
-        new CellInfo(CellColor.Black, CellPattern.Stripes, CellShape.Square),
-        new CellInfo(CellColor.LightGray, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Stripes, CellShape.Circle),
-        new CellInfo(CellColor.Black, CellPattern.Empty, CellShape.Circle),
-        new CellInfo(CellColor.Black, CellPattern.Filled, CellShape.Triangle),
-        new CellInfo(CellColor.White, CellPattern.Filled, CellShape.Square),
-        new CellInfo(CellColor.DarkGray, CellPattern.Checkered, CellShape.Square),
-        new CellInfo(CellColor.Black, CellPattern.Filled, CellShape.Cross),
-        new CellInfo(CellColor.LightGray, CellPattern.Empty, CellShape.Triangle),
-        new CellInfo(CellColor.White, CellPattern.Stripes, CellShape.Cross),
-        new CellInfo(CellColor.Black, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(CellColor.DarkGray, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Stripes, CellShape.Square),
-        new CellInfo(CellColor.DarkGray, CellPattern.Filled, CellShape.Circle),
-        new CellInfo(CellColor.DarkGray, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(0, CellColor.White, CellPattern.Filled, CellShape.Cross),
+        new CellInfo(1, CellColor.Black, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(2, CellColor.DarkGray, CellPattern.Empty, CellShape.Circle),
+        new CellInfo(3, CellColor.Black, CellPattern.Checkered, CellShape.Circle),
+        new CellInfo(4, CellColor.Black, CellPattern.Checkered, CellShape.Triangle),
+        new CellInfo(5, CellColor.Black, CellPattern.Empty, CellShape.Square),
+        new CellInfo(6, CellColor.DarkGray, CellPattern.Empty, CellShape.Cross),
+        new CellInfo(7, CellColor.LightGray, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(8, CellColor.White, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(9, CellColor.Black, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(10, CellColor.DarkGray, CellPattern.Empty, CellShape.Square),
+        new CellInfo(11, CellColor.LightGray, CellPattern.Empty, CellShape.Circle),
+        new CellInfo(12, CellColor.White, CellPattern.Filled, CellShape.Triangle),
+        new CellInfo(13, CellColor.White, CellPattern.Checkered, CellShape.Square),
+        new CellInfo(14, CellColor.Black, CellPattern.Checkered, CellShape.Square),
+        new CellInfo(15, CellColor.DarkGray, CellPattern.Filled, CellShape.Cross),
+        new CellInfo(16, CellColor.White, CellPattern.Empty, CellShape.Square),
+        new CellInfo(17, CellColor.LightGray, CellPattern.Filled, CellShape.Square),
+        new CellInfo(18, CellColor.LightGray, CellPattern.Empty, CellShape.Cross),
+        new CellInfo(19, CellColor.LightGray, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(20, CellColor.White, CellPattern.Checkered, CellShape.Circle),
+        new CellInfo(21, CellColor.LightGray, CellPattern.Filled, CellShape.Triangle),
+        new CellInfo(22, CellColor.LightGray, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(23, CellColor.LightGray, CellPattern.Checkered, CellShape.Square),
+        new CellInfo(24, CellColor.White, CellPattern.Empty, CellShape.Cross),
+        new CellInfo(25, CellColor.Black, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(26, CellColor.DarkGray, CellPattern.Checkered, CellShape.Circle),
+        new CellInfo(27, CellColor.LightGray, CellPattern.Filled, CellShape.Circle),
+        new CellInfo(28, CellColor.White, CellPattern.Empty, CellShape.Triangle),
+        new CellInfo(29, CellColor.Black, CellPattern.Filled, CellShape.Square),
+        new CellInfo(30, CellColor.White, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(31, CellColor.LightGray, CellPattern.Filled, CellShape.Cross),
+        new CellInfo(32, CellColor.Black, CellPattern.Empty, CellShape.Triangle),
+        new CellInfo(33, CellColor.White, CellPattern.Empty, CellShape.Circle),
+        new CellInfo(34, CellColor.White, CellPattern.Checkered, CellShape.Triangle),
+        new CellInfo(35, CellColor.DarkGray, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(36, CellColor.White, CellPattern.Checkered, CellShape.Cross),
+        new CellInfo(37, CellColor.LightGray, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(38, CellColor.LightGray, CellPattern.Checkered, CellShape.Cross),
+        new CellInfo(39, CellColor.White, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(40, CellColor.Black, CellPattern.Checkered, CellShape.Cross),
+        new CellInfo(41, CellColor.DarkGray, CellPattern.Checkered, CellShape.Cross),
+        new CellInfo(42, CellColor.LightGray, CellPattern.Empty, CellShape.Square),
+        new CellInfo(43, CellColor.White, CellPattern.Filled, CellShape.Circle),
+        new CellInfo(44, CellColor.DarkGray, CellPattern.Empty, CellShape.Triangle),
+        new CellInfo(45, CellColor.Black, CellPattern.Filled, CellShape.Circle),
+        new CellInfo(46, CellColor.LightGray, CellPattern.Checkered, CellShape.Circle),
+        new CellInfo(47, CellColor.DarkGray, CellPattern.Filled, CellShape.Triangle),
+        new CellInfo(48, CellColor.DarkGray, CellPattern.Filled, CellShape.Square),
+        new CellInfo(49, CellColor.Black, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(50, CellColor.LightGray, CellPattern.Checkered, CellShape.Triangle),
+        new CellInfo(51, CellColor.DarkGray, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(52, CellColor.Black, CellPattern.Empty, CellShape.Circle),
+        new CellInfo(53, CellColor.Black, CellPattern.Filled, CellShape.Triangle),
+        new CellInfo(54, CellColor.White, CellPattern.Filled, CellShape.Square),
+        new CellInfo(55, CellColor.DarkGray, CellPattern.Checkered, CellShape.Square),
+        new CellInfo(56, CellColor.Black, CellPattern.Filled, CellShape.Cross),
+        new CellInfo(57, CellColor.LightGray, CellPattern.Empty, CellShape.Triangle),
+        new CellInfo(58, CellColor.White, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(59, CellColor.Black, CellPattern.Empty, CellShape.Cross),
+        new CellInfo(60, CellColor.DarkGray, CellPattern.Checkered, CellShape.Triangle),
+        new CellInfo(61, CellColor.DarkGray, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(62, CellColor.DarkGray, CellPattern.Filled, CellShape.Circle),
+        new CellInfo(63, CellColor.DarkGray, CellPattern.Stripes, CellShape.Cross),
     };
 
     void Activate()
@@ -194,11 +196,11 @@ public class runonSentence : MonoBehaviour
         bool usedCase2 = false;
 
         NewPhrase:
-        int maxCases = 5;
+        int maxCases = 8;
         int rndCase = Rnd.Range(0, maxCases);
 
         // TEMP
-        // rndCase = 4;
+        // rndCase = 5;
 
         if (rndCase == 0) // e.g. "is a circle"
         {
@@ -321,21 +323,87 @@ public class runonSentence : MonoBehaviour
             if (Rnd.Range(0, 3) == 0)
             {
                 var prop = (CellColor)rndProp;
-                _possibleAnswers = _possibleAnswers.Where(i => GetKnightPositions(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Color == prop)).ToArray();
+                _possibleAnswers = _possibleAnswers.Where(i => GetKnight(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Color == prop)).ToArray();
                 str = string.Format("is a knight's move away from a cell with a {0} background",
                     (prop == CellColor.LightGray ? "light gray" : prop == CellColor.DarkGray ? "dark gray" : prop.ToString()).ToLowerInvariant());
             }
             else if (Rnd.Range(0, 3) == 1)
             {
                 var prop = (CellPattern)rndProp;
-                _possibleAnswers = _possibleAnswers.Where(i => GetKnightPositions(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Pattern == prop)).ToArray();
+                _possibleAnswers = _possibleAnswers.Where(i => GetKnight(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Pattern == prop)).ToArray();
                 str = string.Format("is a knight's move away from a {0} cell", prop.ToString().ToLowerInvariant());
             }
             else
             {
                 var prop = (CellShape)rndProp;
-                _possibleAnswers = _possibleAnswers.Where(i => GetKnightPositions(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Shape == prop)).ToArray();
+                _possibleAnswers = _possibleAnswers.Where(i => GetKnight(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Shape == prop)).ToArray();
                 str = string.Format("is a knight's move away from a {0}", prop.ToString().ToLowerInvariant());
+            }
+            _condition += str;
+            goto CheckConditions;
+        }
+        if (rndCase == 5) // e.g. has three distinct shapes orthogonally adjacent to it
+        {
+            var rndCount = Rnd.Range(2, 4);
+            string str = "";
+            if (Rnd.Range(0, 3) == 0)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(i.Index).Select(j => _cellinfos[j].Color).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct backgrounds orthogonally adjacent to it", rndCount);
+            }
+            else if (Rnd.Range(0, 3) == 1)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(i.Index).Select(j => _cellinfos[j].Pattern).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct patterns orthogonally adjacent to it", rndCount);
+            }
+            else
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(i.Index).Select(j => _cellinfos[j].Shape).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct shapes orthogonally adjacent to it", rndCount);
+            }
+            _condition += str;
+            goto CheckConditions;
+        }
+        if (rndCase == 6) // e.g. has three distinct shapes diagonally adjacent to it
+        {
+            var rndCount = Rnd.Range(2, 4);
+            string str = "";
+            if (Rnd.Range(0, 3) == 0)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(i.Index).Select(j => _cellinfos[j].Color).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct backgrounds diagonally adjacent to it", rndCount);
+            }
+            else if (Rnd.Range(0, 3) == 1)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(i.Index).Select(j => _cellinfos[j].Pattern).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct patterns diagonally adjacent to it", rndCount);
+            }
+            else
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(i.Index).Select(j => _cellinfos[j].Shape).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct shapes diagonally adjacent to it", rndCount);
+            }
+            _condition += str;
+            goto CheckConditions;
+        }
+        if (rndCase == 7) // e.g. has three distinct shapes that are a knight's move away from it
+        {
+            var rndCount = Rnd.Range(2, 5);
+            string str = "";
+            if (Rnd.Range(0, 3) == 0)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetKnight(i.Index).Select(j => _cellinfos[j].Color).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct backgrounds that are a knight's move away from it", rndCount);
+            }
+            else if (Rnd.Range(0, 3) == 1)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetKnight(i.Index).Select(j => _cellinfos[j].Pattern).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct patterns that are a knight's move away from it", rndCount);
+            }
+            else
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => GetKnight(i.Index).Select(j => _cellinfos[j].Shape).Distinct().Count() == rndCount).ToArray();
+                str = string.Format("has {0} distinct shapes that are a knight's move away from it", rndCount);
             }
             _condition += str;
             goto CheckConditions;
@@ -383,7 +451,7 @@ public class runonSentence : MonoBehaviour
             yield return pos + 9;
     }
 
-    private IEnumerable<int> GetKnightPositions(int pos)
+    private IEnumerable<int> GetKnight(int pos)
     {
         if (pos % 8 > 0 && pos / 8 > 1)
             yield return pos - 17;
