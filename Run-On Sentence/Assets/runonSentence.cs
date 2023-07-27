@@ -194,9 +194,10 @@ public class runonSentence : MonoBehaviour
         _possibleAnswers = _cellinfos.ToArray();
         bool usedCase1 = false;
         bool usedCase2 = false;
+        int maxCases = 8;
+        bool[] usedCases = new bool[maxCases];
 
         NewPhrase:
-        int maxCases = 8;
         int rndCase = Rnd.Range(0, maxCases);
 
         // TEMP
@@ -204,9 +205,9 @@ public class runonSentence : MonoBehaviour
 
         if (rndCase == 0) // e.g. "is a circle"
         {
-            if (usedCase1)
+            if (usedCases[rndCase])
                 goto NewPhrase;
-            usedCase1 = true;
+            usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -233,9 +234,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 1) // e.g. is either a square or a triangle
         {
-            if (usedCase2)
+            if (usedCases[rndCase])
                 goto NewPhrase;
-            usedCase2 = true;
+            usedCases[rndCase] = true;
             var rndProp = Enumerable.Range(0, 4).ToArray().Shuffle();
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -266,6 +267,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 2) // e.g. is orthogonally adjacent to a white background
         {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -292,6 +296,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 3) // e.g. is diagonally adjacent to a checkered cell
         {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -318,6 +325,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 4) // e.g. is a knights move away from a square
         {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -344,6 +354,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 5) // e.g. has three distinct shapes orthogonally adjacent to it
         {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
             var rndCount = Rnd.Range(2, 4);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -366,6 +379,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 6) // e.g. has three distinct shapes diagonally adjacent to it
         {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
             var rndCount = Rnd.Range(2, 4);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -388,6 +404,9 @@ public class runonSentence : MonoBehaviour
         }
         if (rndCase == 7) // e.g. has three distinct shapes that are a knight's move away from it
         {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
             var rndCount = Rnd.Range(2, 5);
             string str = "";
             if (Rnd.Range(0, 3) == 0)
@@ -420,7 +439,7 @@ public class runonSentence : MonoBehaviour
             goto StartFromScratch;
 
         // We're done
-        TempDone:
+        //TempDone:
         Debug.Log(_possibleAnswers.Length);
         Debug.Log(_possibleAnswers.Select(i => Array.IndexOf(_cellinfos, i)).Join(" "));
         _condition += ".";
