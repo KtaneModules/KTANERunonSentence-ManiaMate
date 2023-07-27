@@ -149,6 +149,10 @@ public class runonSentence : MonoBehaviour
         //string[] sentence = { "Yo wassup hello, sit yo pretty ass so long as you came in the door, I just wanna chill.", "Hello" };
         //int index2 = Rnd.Range(0, 2);
         //text.text = sentence[index2];
+        text.text = _condition;
+        text.anchor = TextAnchor.MiddleLeft;
+        text.alignment = TextAlignment.Left;
+        text.fontSize = 340;
         StartCoroutine(Scroll());
     }
 
@@ -174,18 +178,35 @@ public class runonSentence : MonoBehaviour
         mask.sharedMaterial = mr.Mask;
 
         for (int i = 0; i < ColorButtons.Length; i++)
-            ColorButtons[i].OnInteract += ColorButtonPress(i);
+            ColorButtons[i].OnInteract += ColorButtonPress(i, ColorButtons[i]);
         for (int i = 0; i < ShapeButtons.Length; i++)
-            ShapeButtons[i].OnInteract += ShapeButtonPress(i);
+            ShapeButtons[i].OnInteract += ShapeButtonPress(i, ShapeButtons[i]);
         for (int i = 0; i < PatternButtons.Length; i++)
-            PatternButtons[i].OnInteract += PatternButtonPress(i);
-        ResetButton.OnInteract += ResetButtonPress();
+            PatternButtons[i].OnInteract += PatternButtonPress(i, PatternButtons[i]);
+        ResetButton.OnInteract += ResetButtonPress(ResetButton);
 
         _currentColor = (CellColor)Rnd.Range(0, Enum.GetValues(typeof(CellColor)).Length);
         _currentShape = (CellShape)Rnd.Range(0, Enum.GetValues(typeof(CellShape)).Length);
         _currentPattern = (CellPattern)Rnd.Range(0, Enum.GetValues(typeof(CellPattern)).Length);
 
         UpdateDisplayedShape();
+
+        string[] _startTexts = {"Hello world", "Deez", "I can't even fit on the screen", "Good luck!"};
+        string startText = _startTexts[Rnd.Range(0, 4)];
+        text.text = startText;
+        if (startText.Equals("Good luck!"))
+        {
+            text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.0305f, text.transform.localPosition.z);
+        }
+        if (startText.Equals("Deez"))
+        {
+            text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.0131f, text.transform.localPosition.z);
+        }
+        if (startText.Equals("I can't even fit on the screen"))
+        {
+            text.fontSize = 200;
+            text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.0313f, text.transform.localPosition.z);
+        }
 
         string[] beg = { "The chosen cell ", "The answer ", "The opposite of the incorrect answer " };
 
@@ -535,40 +556,44 @@ public class runonSentence : MonoBehaviour
 
     }
 
-    private KMSelectable.OnInteractHandler ColorButtonPress(int i)
+    private KMSelectable.OnInteractHandler ColorButtonPress(int i, KMSelectable button)
     {
         return delegate ()
         {
+            button.AddInteractionPunch(0.5f);
             _currentColor = (CellColor)i;
             UpdateDisplayedShape();
             return false;
         };
     }
 
-    private KMSelectable.OnInteractHandler ShapeButtonPress(int i)
+    private KMSelectable.OnInteractHandler ShapeButtonPress(int i, KMSelectable button)
     {
         return delegate ()
         {
+            button.AddInteractionPunch(0.5f);
             _currentShape = (CellShape)i;
             UpdateDisplayedShape();
             return false;
         };
     }
 
-    private KMSelectable.OnInteractHandler PatternButtonPress(int i)
+    private KMSelectable.OnInteractHandler PatternButtonPress(int i, KMSelectable button)
     {
         return delegate ()
         {
+            button.AddInteractionPunch(0.5f);
             _currentPattern = (CellPattern)i;
             UpdateDisplayedShape();
             return false;
         };
     }
 
-    private KMSelectable.OnInteractHandler ResetButtonPress()
+    private KMSelectable.OnInteractHandler ResetButtonPress(KMSelectable button)
     {
         return delegate ()
         {
+            button.AddInteractionPunch();
             text.transform.localPosition = new Vector3(text.transform.localPosition.x, 0.0352f, text.transform.localPosition.z);
             return false;
         };
