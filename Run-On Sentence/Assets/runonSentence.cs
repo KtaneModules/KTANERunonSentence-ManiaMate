@@ -21,7 +21,7 @@ public class runonSentence : MonoBehaviour
     public MeshRenderer TextRenderer;
     public MeshRenderer mask;
     public MaskShaderManager manage;
-    private float textSpeed = 0.05f;
+    private const float textSpeed = 0.125f;
 
     public MeshRenderer ScreenColorBkgd;
     public MeshRenderer ScreenShape;
@@ -217,7 +217,7 @@ public class runonSentence : MonoBehaviour
         StartFromScratch:
         _condition = beg[Rnd.Range(0, 3)];
         _possibleAnswers = _cellinfos.ToArray();
-        int maxCases = 8;
+        int maxCases = 9; // Number of cases possible
         bool[] usedCases = new bool[maxCases];
 
         NewPhrase:
@@ -232,15 +232,16 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 var prop = (CellColor)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => i.Color == prop).ToArray();
                 str = string.Format("is on a {0} background",
                     (prop == CellColor.LightGray ? "light gray" : prop == CellColor.DarkGray ? "dark gray" : prop.ToString()).ToLowerInvariant());
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 var prop = (CellPattern)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => i.Pattern == prop).ToArray();
@@ -261,8 +262,9 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndProp = Enumerable.Range(0, 4).ToArray().Shuffle();
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 var prop0 = (CellColor)rndProp[0];
                 var prop1 = (CellColor)rndProp[1];
@@ -271,7 +273,7 @@ public class runonSentence : MonoBehaviour
                     (prop0 == CellColor.LightGray ? "light gray" : prop0 == CellColor.DarkGray ? "dark gray" : prop0.ToString()).ToLowerInvariant(),
                     (prop1 == CellColor.LightGray ? "light gray" : prop1 == CellColor.DarkGray ? "dark gray" : prop1.ToString()).ToLowerInvariant());
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 var prop0 = (CellPattern)rndProp[0];
                 var prop1 = (CellPattern)rndProp[1];
@@ -294,19 +296,20 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 var prop = (CellColor)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Color == prop)).ToArray();
                 str = string.Format("is orthogonally adjacent to a cell with a {0} background",
                     (prop == CellColor.LightGray ? "light gray" : prop == CellColor.DarkGray ? "dark gray" : prop.ToString()).ToLowerInvariant());
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 var prop = (CellPattern)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Pattern == prop)).ToArray();
-                str = string.Format("is orthogonally adjacent to a {0} cell", prop.ToString().ToLowerInvariant());
+                str = string.Format("is orthogonally adjacent to a{1} {0} cell", prop.ToString().ToLowerInvariant(), prop == CellPattern.Empty ? "n" : "");
             }
             else
             {
@@ -323,19 +326,20 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 var prop = (CellColor)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Color == prop)).ToArray();
                 str = string.Format("is diagonally adjacent to a cell with a {0} background",
                     (prop == CellColor.LightGray ? "light gray" : prop == CellColor.DarkGray ? "dark gray" : prop.ToString()).ToLowerInvariant());
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 var prop = (CellPattern)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Pattern == prop)).ToArray();
-                str = string.Format("is diagonally adjacent to a {0} cell", prop.ToString().ToLowerInvariant());
+                str = string.Format("is diagonally adjacent to a{1} {0} cell", prop.ToString().ToLowerInvariant(), prop == CellPattern.Empty ? "n" : "");
             }
             else
             {
@@ -352,19 +356,20 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndProp = Rnd.Range(0, 4);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 var prop = (CellColor)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => GetKnight(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Color == prop)).ToArray();
                 str = string.Format("is a knight's move away from a cell with a {0} background",
                     (prop == CellColor.LightGray ? "light gray" : prop == CellColor.DarkGray ? "dark gray" : prop.ToString()).ToLowerInvariant());
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 var prop = (CellPattern)rndProp;
                 _possibleAnswers = _possibleAnswers.Where(i => GetKnight(Array.IndexOf(_cellinfos, i)).Any(j => _cellinfos[j].Pattern == prop)).ToArray();
-                str = string.Format("is a knight's move away from a {0} cell", prop.ToString().ToLowerInvariant());
+                str = string.Format("is a knight's move away from a{1} {0} cell", prop.ToString().ToLowerInvariant(), prop == CellPattern.Empty ? "n" : "");
             }
             else
             {
@@ -381,13 +386,14 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndCount = Rnd.Range(2, 4);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(i.Index).Select(j => _cellinfos[j].Color).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct backgrounds orthogonally adjacent to it", rndCount);
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetOrthogonal(i.Index).Select(j => _cellinfos[j].Pattern).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct patterns orthogonally adjacent to it", rndCount);
@@ -406,13 +412,14 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndCount = Rnd.Range(2, 4);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(i.Index).Select(j => _cellinfos[j].Color).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct backgrounds diagonally adjacent to it", rndCount);
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetDiagonal(i.Index).Select(j => _cellinfos[j].Pattern).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct patterns diagonally adjacent to it", rndCount);
@@ -431,13 +438,14 @@ public class runonSentence : MonoBehaviour
                 goto NewPhrase;
             usedCases[rndCase] = true;
             var rndCount = Rnd.Range(2, 5);
+            var rndVal = Rnd.Range(0, 3);
             string str = "";
-            if (Rnd.Range(0, 3) == 0)
+            if (rndVal == 0)
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetKnight(i.Index).Select(j => _cellinfos[j].Color).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct backgrounds that are a knight's move away from it", rndCount);
             }
-            else if (Rnd.Range(0, 3) == 1)
+            else if (rndVal == 1)
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetKnight(i.Index).Select(j => _cellinfos[j].Pattern).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct patterns that are a knight's move away from it", rndCount);
@@ -446,6 +454,36 @@ public class runonSentence : MonoBehaviour
             {
                 _possibleAnswers = _possibleAnswers.Where(i => GetKnight(i.Index).Select(j => _cellinfos[j].Shape).Distinct().Count() == rndCount).ToArray();
                 str = string.Format("has {0} distinct shapes that are a knight's move away from it", rndCount);
+            }
+            _condition += str;
+            goto CheckConditions;
+        }
+        if (rndCase == 8) // e.g. is in the bottom half of the grid
+        {
+            if (usedCases[rndCase])
+                goto NewPhrase;
+            usedCases[rndCase] = true;
+            var rndVal = Rnd.Range(0, 4);
+            string str;
+            if (rndVal == 0)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => i.Index % 8 <= 3).ToArray();
+                str = "is on the left half of the grid";
+            }
+            else if (rndVal == 1)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => i.Index % 8 >= 4).ToArray();
+                str = "is on the right half of the grid";
+            }
+            else if (rndVal == 2)
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => i.Index / 8 <= 3).ToArray();
+                str = "is on the top half of the grid";
+            }
+            else
+            {
+                _possibleAnswers = _possibleAnswers.Where(i => i.Index / 8 <= 3).ToArray();
+                str = "is on the bottom half of the grid";
             }
             _condition += str;
             goto CheckConditions;
@@ -464,9 +502,8 @@ public class runonSentence : MonoBehaviour
         _condition += ".";
         _goalAnswer = _possibleAnswers.First();
         Debug.LogFormat("[Run-On Sentence #{0}] The display reads:", ModuleId);
-        Debug.LogFormat("[Run-On Sentence #{0}] {1}", ModuleId, _condition);
-        Debug.LogFormat("[Run-On Sentence #{0}] The cell being described is located at {1}.", ModuleId, GetCoord(_goalAnswer.Index));
-        Debug.LogFormat("[Run-On Sentence #{0}] The cell to submit is {1}.", ModuleId, _goalAnswer.ToString());
+        Debug.LogFormat("[Run-On Sentence #{0}] \"{1}\"", ModuleId, _condition);
+        Debug.LogFormat("[Run-On Sentence #{0}] The cell to submit, located at {1}, is {2}.", ModuleId, GetCoord(_goalAnswer.Index), _goalAnswer.ToString());
     }
 
     private string GetCoord(int pos)
