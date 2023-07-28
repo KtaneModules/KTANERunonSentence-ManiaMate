@@ -35,8 +35,6 @@ public class runonSentence : MonoBehaviour
     private CellColor _currentColor;
     private CellPattern _currentPattern;
     private CellShape _currentShape;
-    private List<string> conds = new List<string>();
-    private string tempMesg;
 
     private string _condition = "";
     private CellInfo[] _possibleAnswers;
@@ -213,8 +211,6 @@ public class runonSentence : MonoBehaviour
         StartFromScratch:
         _condition = beg[Rnd.Range(0, 3)];
         _possibleAnswers = _cellinfos.ToArray();
-        bool usedCase1 = false;
-        bool usedCase2 = false;
         int maxCases = 8;
         bool[] usedCases = new bool[maxCases];
 
