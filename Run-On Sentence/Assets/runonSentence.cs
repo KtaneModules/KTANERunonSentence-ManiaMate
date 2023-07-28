@@ -10,6 +10,7 @@ using Rnd = UnityEngine.Random;
 public class runonSentence : MonoBehaviour
 {
     public KMBombInfo Bomb;
+    public KMBombModule Module;
     public KMAudio Audio;
 
     private int ModuleId;
@@ -31,6 +32,7 @@ public class runonSentence : MonoBehaviour
     public KMSelectable[] ShapeButtons;
     public KMSelectable[] PatternButtons;
     public KMSelectable ResetButton;
+    public KMSelectable SubmitButton;
 
     private CellColor _currentColor;
     private CellPattern _currentPattern;
@@ -38,9 +40,10 @@ public class runonSentence : MonoBehaviour
 
     private string _condition = "";
     private CellInfo[] _possibleAnswers;
+    private CellInfo _goalAnswer;
 
     public enum CellColor { White, LightGray, DarkGray, Black }
-    public enum CellPattern { Empty, Checkered, Stripes, Filled }
+    public enum CellPattern { Empty, Checkered, Striped, Filled }
     public enum CellShape { Circle, Square, Triangle, Cross }
 
     public class CellInfo : IEquatable<CellInfo>
@@ -72,20 +75,25 @@ public class runonSentence : MonoBehaviour
         {
             return base.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Format("a{0} {1} {2} with a {3} background", Pattern == CellPattern.Empty ? "n" : "", Pattern.ToString().ToLowerInvariant(), Shape.ToString().ToLowerInvariant(), (Color == CellColor.LightGray ? "light gray" : Color == CellColor.DarkGray ? "dark gray" : Color.ToString()).ToLowerInvariant());
+        }
     }
 
     private static readonly CellInfo[] _cellinfos = new CellInfo[]
     {
         new CellInfo(0, CellColor.White, CellPattern.Filled, CellShape.Cross),
-        new CellInfo(1, CellColor.Black, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(1, CellColor.Black, CellPattern.Striped, CellShape.Cross),
         new CellInfo(2, CellColor.DarkGray, CellPattern.Empty, CellShape.Circle),
         new CellInfo(3, CellColor.Black, CellPattern.Checkered, CellShape.Circle),
         new CellInfo(4, CellColor.Black, CellPattern.Checkered, CellShape.Triangle),
         new CellInfo(5, CellColor.Black, CellPattern.Empty, CellShape.Square),
         new CellInfo(6, CellColor.DarkGray, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(7, CellColor.LightGray, CellPattern.Stripes, CellShape.Square),
-        new CellInfo(8, CellColor.White, CellPattern.Stripes, CellShape.Circle),
-        new CellInfo(9, CellColor.Black, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(7, CellColor.LightGray, CellPattern.Striped, CellShape.Square),
+        new CellInfo(8, CellColor.White, CellPattern.Striped, CellShape.Circle),
+        new CellInfo(9, CellColor.Black, CellPattern.Striped, CellShape.Triangle),
         new CellInfo(10, CellColor.DarkGray, CellPattern.Empty, CellShape.Square),
         new CellInfo(11, CellColor.LightGray, CellPattern.Empty, CellShape.Circle),
         new CellInfo(12, CellColor.White, CellPattern.Filled, CellShape.Triangle),
@@ -95,27 +103,27 @@ public class runonSentence : MonoBehaviour
         new CellInfo(16, CellColor.White, CellPattern.Empty, CellShape.Square),
         new CellInfo(17, CellColor.LightGray, CellPattern.Filled, CellShape.Square),
         new CellInfo(18, CellColor.LightGray, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(19, CellColor.LightGray, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(19, CellColor.LightGray, CellPattern.Striped, CellShape.Triangle),
         new CellInfo(20, CellColor.White, CellPattern.Checkered, CellShape.Circle),
         new CellInfo(21, CellColor.LightGray, CellPattern.Filled, CellShape.Triangle),
-        new CellInfo(22, CellColor.LightGray, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(22, CellColor.LightGray, CellPattern.Striped, CellShape.Circle),
         new CellInfo(23, CellColor.LightGray, CellPattern.Checkered, CellShape.Square),
         new CellInfo(24, CellColor.White, CellPattern.Empty, CellShape.Cross),
-        new CellInfo(25, CellColor.Black, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(25, CellColor.Black, CellPattern.Striped, CellShape.Circle),
         new CellInfo(26, CellColor.DarkGray, CellPattern.Checkered, CellShape.Circle),
         new CellInfo(27, CellColor.LightGray, CellPattern.Filled, CellShape.Circle),
         new CellInfo(28, CellColor.White, CellPattern.Empty, CellShape.Triangle),
         new CellInfo(29, CellColor.Black, CellPattern.Filled, CellShape.Square),
-        new CellInfo(30, CellColor.White, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(30, CellColor.White, CellPattern.Striped, CellShape.Square),
         new CellInfo(31, CellColor.LightGray, CellPattern.Filled, CellShape.Cross),
         new CellInfo(32, CellColor.Black, CellPattern.Empty, CellShape.Triangle),
         new CellInfo(33, CellColor.White, CellPattern.Empty, CellShape.Circle),
         new CellInfo(34, CellColor.White, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(35, CellColor.DarkGray, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(35, CellColor.DarkGray, CellPattern.Striped, CellShape.Triangle),
         new CellInfo(36, CellColor.White, CellPattern.Checkered, CellShape.Cross),
-        new CellInfo(37, CellColor.LightGray, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(37, CellColor.LightGray, CellPattern.Striped, CellShape.Cross),
         new CellInfo(38, CellColor.LightGray, CellPattern.Checkered, CellShape.Cross),
-        new CellInfo(39, CellColor.White, CellPattern.Stripes, CellShape.Triangle),
+        new CellInfo(39, CellColor.White, CellPattern.Striped, CellShape.Triangle),
         new CellInfo(40, CellColor.Black, CellPattern.Checkered, CellShape.Cross),
         new CellInfo(41, CellColor.DarkGray, CellPattern.Checkered, CellShape.Cross),
         new CellInfo(42, CellColor.LightGray, CellPattern.Empty, CellShape.Square),
@@ -125,28 +133,25 @@ public class runonSentence : MonoBehaviour
         new CellInfo(46, CellColor.LightGray, CellPattern.Checkered, CellShape.Circle),
         new CellInfo(47, CellColor.DarkGray, CellPattern.Filled, CellShape.Triangle),
         new CellInfo(48, CellColor.DarkGray, CellPattern.Filled, CellShape.Square),
-        new CellInfo(49, CellColor.Black, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(49, CellColor.Black, CellPattern.Striped, CellShape.Square),
         new CellInfo(50, CellColor.LightGray, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(51, CellColor.DarkGray, CellPattern.Stripes, CellShape.Circle),
+        new CellInfo(51, CellColor.DarkGray, CellPattern.Striped, CellShape.Circle),
         new CellInfo(52, CellColor.Black, CellPattern.Empty, CellShape.Circle),
         new CellInfo(53, CellColor.Black, CellPattern.Filled, CellShape.Triangle),
         new CellInfo(54, CellColor.White, CellPattern.Filled, CellShape.Square),
         new CellInfo(55, CellColor.DarkGray, CellPattern.Checkered, CellShape.Square),
         new CellInfo(56, CellColor.Black, CellPattern.Filled, CellShape.Cross),
         new CellInfo(57, CellColor.LightGray, CellPattern.Empty, CellShape.Triangle),
-        new CellInfo(58, CellColor.White, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(58, CellColor.White, CellPattern.Striped, CellShape.Cross),
         new CellInfo(59, CellColor.Black, CellPattern.Empty, CellShape.Cross),
         new CellInfo(60, CellColor.DarkGray, CellPattern.Checkered, CellShape.Triangle),
-        new CellInfo(61, CellColor.DarkGray, CellPattern.Stripes, CellShape.Square),
+        new CellInfo(61, CellColor.DarkGray, CellPattern.Striped, CellShape.Square),
         new CellInfo(62, CellColor.DarkGray, CellPattern.Filled, CellShape.Circle),
-        new CellInfo(63, CellColor.DarkGray, CellPattern.Stripes, CellShape.Cross),
+        new CellInfo(63, CellColor.DarkGray, CellPattern.Striped, CellShape.Cross),
     };
 
     void Activate()
-    { //Shit that should happen when the bomb arrives (factory)/Lights turn on
-        //string[] sentence = { "Yo wassup hello, sit yo pretty ass so long as you came in the door, I just wanna chill.", "Hello" };
-        //int index2 = Rnd.Range(0, 2);
-        //text.text = sentence[index2];
+    {
         text.text = _condition;
         text.anchor = TextAnchor.MiddleLeft;
         text.alignment = TextAlignment.Left;
@@ -181,7 +186,8 @@ public class runonSentence : MonoBehaviour
             ShapeButtons[i].OnInteract += ShapeButtonPress(i, ShapeButtons[i]);
         for (int i = 0; i < PatternButtons.Length; i++)
             PatternButtons[i].OnInteract += PatternButtonPress(i, PatternButtons[i]);
-        ResetButton.OnInteract += ResetButtonPress(ResetButton);
+        ResetButton.OnInteract += ResetButtonPress;
+        SubmitButton.OnInteract += SubmitButtonPress;
 
         _currentColor = (CellColor)Rnd.Range(0, Enum.GetValues(typeof(CellColor)).Length);
         _currentShape = (CellShape)Rnd.Range(0, Enum.GetValues(typeof(CellShape)).Length);
@@ -189,7 +195,7 @@ public class runonSentence : MonoBehaviour
 
         UpdateDisplayedShape();
 
-        string[] _startTexts = {"Hello world", "Deez", "I can't even fit on the screen", "Good luck!"};
+        string[] _startTexts = { "Hello world", "Deez", "I can't even fit on the screen", "Good luck!" };
         string startText = _startTexts[Rnd.Range(0, 4)];
         text.text = startText;
         if (startText.Equals("Good luck!"))
@@ -215,10 +221,10 @@ public class runonSentence : MonoBehaviour
         bool[] usedCases = new bool[maxCases];
 
         NewPhrase:
-        int rndCase = Rnd.Range(0, maxCases);
+        if (!usedCases.Contains(false))
+            goto StartFromScratch;
 
-        // TEMP
-        // rndCase = 5;
+        int rndCase = Rnd.Range(0, maxCases);
 
         if (rndCase == 0) // e.g. "is a circle"
         {
@@ -446,21 +452,26 @@ public class runonSentence : MonoBehaviour
         }
 
         CheckConditions:
-        if (_possibleAnswers.Length > 1)// we need more conditions
+        if (_possibleAnswers.Length > 1) // we need more conditions
         {
-            // goto TempDone;
-            _condition += ", ";
+            _condition += " and ";
             goto NewPhrase;
         }
-        if (_possibleAnswers.Length < 1) // oops we done fucked up, start over
+        if (_possibleAnswers.Length == 0) // oops we done fucked up, start over
             goto StartFromScratch;
 
         // We're done
-        //TempDone:
-        Debug.Log(_possibleAnswers.Length);
-        Debug.Log(_possibleAnswers.Select(i => Array.IndexOf(_cellinfos, i)).Join(" "));
         _condition += ".";
-        Debug.Log(_condition);
+        _goalAnswer = _possibleAnswers.First();
+        Debug.LogFormat("[Run-On Sentence #{0}] The display reads:", ModuleId);
+        Debug.LogFormat("[Run-On Sentence #{0}] {1}", ModuleId, _condition);
+        Debug.LogFormat("[Run-On Sentence #{0}] The cell being described is located at {1}.", ModuleId, GetCoord(_goalAnswer.Index));
+        Debug.LogFormat("[Run-On Sentence #{0}] The cell to submit is {1}.", ModuleId, _goalAnswer.ToString());
+    }
+
+    private string GetCoord(int pos)
+    {
+        return "ABCDEFGH"[pos % 8].ToString() + ((pos / 8) + 1).ToString();
     }
 
     private IEnumerable<int> GetOrthogonal(int pos)
@@ -507,51 +518,6 @@ public class runonSentence : MonoBehaviour
             yield return pos + 10;
     }
 
-    /*
-    private string GenerateSimpleCond(List<int> possAnswers)
-    {
-        int type = Rnd.Range(0, 3);
-        int specType = Rnd.Range(0, 4);
-        if (type == 0)
-        {
-            char ans = _possiblePatterns[specType];
-            for (int i = 0; i < 64; i++)
-            {
-                if (!(patternChart[i / 8, i % 8].Equals(ans)))
-                {
-                    possAnswers.Remove(i);
-                }
-            }
-            return "is " + ans;
-        }
-        if (type == 1)
-        {
-            char ans2 = _possibleShapes[specType];
-            for (int i = 0; i < 64; i++)
-            {
-                if (!(shapeChart[i / 8, i % 8].Equals(ans2)))
-                {
-                    possAnswers.Remove(i);
-                }
-            }
-            return "has a " + ans2;
-        }
-        char ans3 = _possibleColors[specType];
-        for (int i = 0; i < 64; i++)
-        {
-            if (!(colorChart[i / 8, i % 8].Equals(ans3)))
-            {
-                possAnswers.Remove(i);
-            }
-        }
-        return "is on a " + ans3 + " background";
-    }
-    */
-    private void GenerateCompCond(List<int> possAnswers)
-    {
-
-    }
-
     private KMSelectable.OnInteractHandler ColorButtonPress(int i, KMSelectable button)
     {
         return delegate ()
@@ -585,35 +551,39 @@ public class runonSentence : MonoBehaviour
         };
     }
 
-    private KMSelectable.OnInteractHandler ResetButtonPress(KMSelectable button)
+    private bool ResetButtonPress()
     {
-        return delegate ()
-        {
-            button.AddInteractionPunch();
-            text.transform.localPosition = new Vector3(text.transform.localPosition.x, 0.0352f, text.transform.localPosition.z);
+        ResetButton.AddInteractionPunch(0.5f);
+        if (ModuleSolved)
             return false;
-        };
+        text.transform.localPosition = new Vector3(text.transform.localPosition.x, 0.0352f, text.transform.localPosition.z);
+        return false;
+    }
+
+    private bool SubmitButtonPress()
+    {
+        SubmitButton.AddInteractionPunch(0.5f);
+        if (ModuleSolved)
+            return false;
+        var inputCell = new CellInfo(-1, _currentColor, _currentPattern, _currentShape);
+        if (inputCell.Equals(_goalAnswer))
+        {
+            ModuleSolved = true;
+            Module.HandlePass();
+            Debug.LogFormat("[Run-On Sentence #{0}] You correctly submitted {1}. Module solved.", ModuleId, inputCell.ToString());
+        }
+        else
+        {
+            Module.HandleStrike();
+            Debug.LogFormat("[Run-On Sentence #{0}] You incorrectly submitted {1}. Strike.", ModuleId, inputCell.ToString());
+        }
+        return false;
     }
 
     private void UpdateDisplayedShape()
     {
         ScreenColorBkgd.material = ScreenColorMats[(int)_currentColor];
         ScreenShape.material.mainTexture = ScreenTextures[(int)_currentPattern + (4 * (int)_currentShape) + ((int)_currentColor > 1 ? 16 : 0)];
-    }
-
-    void Update()
-    { //Shit that happens at any point after initialization
-
-    }
-
-    void Solve()
-    {
-        GetComponent<KMBombModule>().HandlePass();
-    }
-
-    void Strike()
-    {
-        GetComponent<KMBombModule>().HandleStrike();
     }
 
 #pragma warning disable 414
