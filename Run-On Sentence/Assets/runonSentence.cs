@@ -150,6 +150,89 @@ public class runonSentence : MonoBehaviour
         new CellInfo(63, CellColor.DarkGray, CellPattern.Striped, CellShape.Cross),
     };
 
+    private static readonly string[] _fakes = new string[]
+    {
+        "is on a white background",
+        "is on a light gray background",
+        "is on a dark gray background",
+        "is on a black background",
+        "is empty",
+        "is checkered",
+        "is striped",
+        "is filled",
+        "is a circle",
+        "is a square",
+        "is a triangle",
+        "is a cross",
+        "is orthogonally adjacent to a cell with a white background",
+        "is orthogonally adjacent to a cell with a light gray background",
+        "is orthogonally adjacent to a cell with a dark gray background",
+        "is orthogonally adjacent to a cell with a black background",
+        "is orthogonally adjacent to an empty cell",
+        "is orthogonally adjacent to a checkered cell",
+        "is orthogonally adjacent to a striped cell",
+        "is orthogonally adjacent to a filled cell",
+        "is orthogonally adjacent to a circle",
+        "is orthogonally adjacent to a square",
+        "is orthogonally adjacent to a triangle",
+        "is orthogonally adjacent to a cross",
+        "is diagonally adjacent to a cell with a white background",
+        "is diagonally adjacent to a cell with a light gray background",
+        "is diagonally adjacent to a cell with a dark gray background",
+        "is diagonally adjacent to a cell with a black background",
+        "is diagonally adjacent to an empty cell",
+        "is diagonally adjacent to a checkered cell",
+        "is diagonally adjacent to a striped cell",
+        "is diagonally adjacent to a filled cell",
+        "is diagonally adjacent to a circle",
+        "is diagonally adjacent to a square",
+        "is diagonally adjacent to a triangle",
+        "is diagonally adjacent to a cross",
+        "is a knight's move away from a cell with a white background",
+        "is a knight's move away from a cell with a light gray background",
+        "is a knight's move away from a cell with a dark gray background",
+        "is a knight's move away from a cell with a black background",
+        "is a knight's move away from an empty cell",
+        "is a knight's move away from a checkered cell",
+        "is a knight's move away from a striped cell",
+        "is a knight's move away from a filled cell",
+        "is a knight's move away from a circle",
+        "is a knight's move away from a square",
+        "is a knight's move away from a triangle",
+        "is a knight's move away from a cross",
+        "has 2 distinct backgrounds orthogonally adjacent to it",
+        "has 3 distinct backgrounds orthogonally adjacent to it",
+        "has 4 distinct backgrounds orthogonally adjacent to it",
+        "has 2 distinct patterns orthogonally adjacent to it",
+        "has 3 distinct patterns orthogonally adjacent to it",
+        "has 4 distinct patterns orthogonally adjacent to it",
+        "has 2 distinct shapes orthogonally adjacent to it",
+        "has 3 distinct shapes orthogonally adjacent to it",
+        "has 4 distinct shapes orthogonally adjacent to it",
+        "has 2 distinct backgrounds diagonally adjacent to it",
+        "has 3 distinct backgrounds diagonally adjacent to it",
+        "has 4 distinct backgrounds diagonally adjacent to it",
+        "has 2 distinct patterns diagonally adjacent to it",
+        "has 3 distinct patterns diagonally adjacent to it",
+        "has 4 distinct patterns diagonally adjacent to it",
+        "has 2 distinct shapes diagonally adjacent to it",
+        "has 3 distinct shapes diagonally adjacent to it",
+        "has 4 distinct shapes diagonally adjacent to it",
+        "has 2 distinct backgrounds that are a knight's move away from it",
+        "has 3 distinct backgrounds that are a knight's move away from it",
+        "has 4 distinct backgrounds that are a knight's move away from it",
+        "has 2 distinct patterns that are a knight's move away from it",
+        "has 3 distinct patterns that are a knight's move away from it",
+        "has 4 distinct patterns that are a knight's move away from it",
+        "has 2 distinct shapes that are a knight's move away from it",
+        "has 3 distinct shapes that are a knight's move away from it",
+        "has 4 distinct shapes that are a knight's move away from it",
+        "is on the left half of the grid",
+        "is on the right half of the grid",
+        "is on the top half of the grid",
+        "is on the bottom half of the grid"
+    };
+
     void Activate()
     {
         text.text = _condition;
@@ -180,12 +263,12 @@ public class runonSentence : MonoBehaviour
         TextRenderer.material.mainTexture = fontTexture;
         mask.sharedMaterial = mr.Mask;
 
-        for (int i = 0; i < ColorButtons.Length; i++)
-            ColorButtons[i].OnInteract += ColorButtonPress(i, ColorButtons[i]);
-        for (int i = 0; i < ShapeButtons.Length; i++)
-            ShapeButtons[i].OnInteract += ShapeButtonPress(i, ShapeButtons[i]);
         for (int i = 0; i < PatternButtons.Length; i++)
-            PatternButtons[i].OnInteract += PatternButtonPress(i, PatternButtons[i]);
+            PatternButtons[i].OnInteract += PatternButtonPress(i);
+        for (int i = 0; i < ShapeButtons.Length; i++)
+            ShapeButtons[i].OnInteract += ShapeButtonPress(i);
+        for (int i = 0; i < ColorButtons.Length; i++)
+            ColorButtons[i].OnInteract += ColorButtonPress(i);
         ResetButton.OnInteract += ResetButtonPress;
         SubmitButton.OnInteract += SubmitButtonPress;
 
@@ -501,8 +584,29 @@ public class runonSentence : MonoBehaviour
         // We're done
         _condition += ".";
         _goalAnswer = _possibleAnswers.First();
+
+        // Fuck it dummy time
+        var conditionWithoutDummy = _condition;
+        var ands = new List<int>();
+        for (int i = 0; i < _condition.Length - 2; i++)
+            if (_condition.Substring(i, 3) == "and")
+                ands.Add(i + 3);
+        var randomIxs = ands.ToArray().Shuffle().Take(2).OrderBy(x => x).ToArray();
+        var stringA = _condition.Substring(0, randomIxs[1]);
+        var stringB = _condition.Substring(randomIxs[1]);
+        int ix = ands.IndexOf(randomIxs[0]);
+        var ordinals = new[] { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" };
+        _condition = stringA + " actually ignore the " + ordinals[ix + 1] + " thing I said and" + stringB;
+        var fake = _fakes.PickRandom();
+        var stringC = _condition.Substring(0, randomIxs[0]);
+        var stringD = _condition.Substring(randomIxs[0]);
+        _condition = stringC + " " + fake + " and" + stringD;
+
         Debug.LogFormat("[Run-On Sentence #{0}] The display reads:", ModuleId);
         Debug.LogFormat("[Run-On Sentence #{0}] \"{1}\"", ModuleId, _condition);
+        Debug.LogFormat("[Run-On Sentence #{0}] The dummy phrase: \"{1}\".", ModuleId, fake);
+        Debug.LogFormat("[Run-On Sentence #{0}] The display without the dummy reads:", ModuleId);
+        Debug.LogFormat("[Run-On Sentence #{0}] \"{1}\"", ModuleId, conditionWithoutDummy);
         Debug.LogFormat("[Run-On Sentence #{0}] The cell to submit, located at {1}, is {2}.", ModuleId, GetCoord(_goalAnswer.Index), _goalAnswer.ToString());
     }
 
@@ -555,37 +659,51 @@ public class runonSentence : MonoBehaviour
             yield return pos + 10;
     }
 
-    private KMSelectable.OnInteractHandler ColorButtonPress(int i, KMSelectable button)
+    private KMSelectable.OnInteractHandler PatternButtonPress(int i)
     {
         return delegate ()
         {
-            button.AddInteractionPunch(0.5f);
-            _currentColor = (CellColor)i;
+            PatternButtons[i].AddInteractionPunch(0.5f);
+            if (ModuleSolved)
+                return false;
+            PlayRandomSound();
+            _currentPattern = (CellPattern)i;
             UpdateDisplayedShape();
             return false;
         };
     }
 
-    private KMSelectable.OnInteractHandler ShapeButtonPress(int i, KMSelectable button)
+    private KMSelectable.OnInteractHandler ShapeButtonPress(int i)
     {
         return delegate ()
         {
-            button.AddInteractionPunch(0.5f);
+            ShapeButtons[i].AddInteractionPunch(0.5f);
+            if (ModuleSolved)
+                return false;
+            PlayRandomSound();
             _currentShape = (CellShape)i;
             UpdateDisplayedShape();
             return false;
         };
     }
 
-    private KMSelectable.OnInteractHandler PatternButtonPress(int i, KMSelectable button)
+    private KMSelectable.OnInteractHandler ColorButtonPress(int i)
     {
         return delegate ()
         {
-            button.AddInteractionPunch(0.5f);
-            _currentPattern = (CellPattern)i;
+            ColorButtons[i].AddInteractionPunch(0.5f);
+            if (ModuleSolved)
+                return false;
+            PlayRandomSound();
+            _currentColor = (CellColor)i;
             UpdateDisplayedShape();
             return false;
         };
+    }
+
+    private void PlayRandomSound()
+    {
+        Audio.PlaySoundAtTransform("Punch" + Rnd.Range(1, 3), transform);
     }
 
     private bool ResetButtonPress()
@@ -606,6 +724,7 @@ public class runonSentence : MonoBehaviour
         if (inputCell.Equals(_goalAnswer))
         {
             ModuleSolved = true;
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
             Module.HandlePass();
             Debug.LogFormat("[Run-On Sentence #{0}] You correctly submitted {1}. Module solved.", ModuleId, inputCell.ToString());
         }
@@ -624,16 +743,43 @@ public class runonSentence : MonoBehaviour
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} to do something.";
+    private readonly string TwitchHelpMessage = "!{0} reset [Press the reset button.] | !{0} submit empty square white [Submit an empty square with a white background.]\nPatterns are empty, checkered, striped, filled. Shapes are circle, square, triangle, cross. Colors are white, light gray, dark gray, black.";
 #pragma warning restore 414
 
-    IEnumerator ProcessTwitchCommand(string Command)
+    IEnumerator ProcessTwitchCommand(string command)
     {
+        var m = Regex.Match(command, @"^\s*reset\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        if (m.Success)
+        {
+            yield return null;
+            ResetButton.OnInteract();
+            yield break;
+        }
+        m = Regex.Match(command, @"^\s*submit\s+(?<pattern>empty|checkered|striped|filled)\s+(?<shape>circle|square|triangle|cross)\s+(?<color>white|light\s+gray|dark\s+gray|black)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        if (!m.Success)
+            yield break;
         yield return null;
+        int patternIx = Array.IndexOf(new string[] { "empty", "checkered", "striped", "filled" }, m.Groups["pattern"].Value);
+        int shapeIx = Array.IndexOf(new string[] { "circle", "square", "triangle", "cross" }, m.Groups["shape"].Value);
+        int colorIx = Array.IndexOf(new string[] { "white", "light gray", "dark gray", "black" }, m.Groups["color"].Value);
+        PatternButtons[patternIx].OnInteract();
+        yield return new WaitForSeconds(0.2f);
+        ShapeButtons[shapeIx].OnInteract();
+        yield return new WaitForSeconds(0.2f);
+        ColorButtons[colorIx].OnInteract();
+        yield return new WaitForSeconds(0.2f);
+        SubmitButton.OnInteract();
     }
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        yield return null;
+        PatternButtons[(int)_goalAnswer.Pattern].OnInteract();
+        yield return new WaitForSeconds(0.2f);
+        ShapeButtons[(int)_goalAnswer.Shape].OnInteract();
+        yield return new WaitForSeconds(0.2f);
+        ColorButtons[(int)_goalAnswer.Color].OnInteract();
+        yield return new WaitForSeconds(0.2f);
+        SubmitButton.OnInteract();
+        yield break;
     }
 }
