@@ -482,7 +482,7 @@ public class runonSentence : MonoBehaviour
             }
             else
             {
-                _possibleAnswers = _possibleAnswers.Where(i => i.Index / 8 <= 3).ToArray();
+                _possibleAnswers = _possibleAnswers.Where(i => i.Index / 8 >= 4).ToArray();
                 str = "is on the bottom half of the grid";
             }
             _condition += str;
