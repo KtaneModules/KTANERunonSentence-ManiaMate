@@ -16,7 +16,7 @@ MonoBehaviour:
   author: ManiaMate, ItzShaun, Quinn Wuest
   description: "And it goes on and on and on and on and on and on and on and on and\n\nBy
     reading the run-on sentence from the display, determine which cell in a grid is
-    being described.\n\n[url=https://ktane.timwi.de/HTML/Run-On%20Sentence.html]Manual
+    being described.\n\nMade by ManiaMate, ItzShaun, and Quinn Wuest\n\n[url=https://ktane.timwi.de/HTML/Run-On%20Sentence.html]Manual
     HTML[/url]\r\n[url=https://ktane.timwi.de/PDF/Run-On%20Sentence.pdf]Manual PDF[/url]"
   version: 1.0
   outputFolder: build
