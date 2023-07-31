@@ -21,7 +21,7 @@ public class runonSentence : MonoBehaviour
     public MeshRenderer TextRenderer;
     public MeshRenderer mask;
     public MaskShaderManager manage;
-    private const float textSpeed = 0.125f;
+    private const float textSpeed = 0.075f;
 
     public MeshRenderer ScreenColorBkgd;
     public MeshRenderer ScreenShape;
@@ -247,7 +247,8 @@ public class runonSentence : MonoBehaviour
         text.transform.localPosition = new Vector3(text.transform.localPosition.x, 0.0352f, text.transform.localPosition.z);
         while (true)
         {
-            text.transform.Translate(Vector3.left * Time.deltaTime * textSpeed);
+            var y = text.transform.localPosition.y;
+            text.transform.localPosition = new Vector3(text.transform.localPosition.x, y - (textSpeed * Time.deltaTime), text.transform.localPosition.z);
             yield return null;
         }
     }
