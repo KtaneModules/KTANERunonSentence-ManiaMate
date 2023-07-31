@@ -245,8 +245,12 @@ public class runonSentence : MonoBehaviour
     IEnumerator Scroll()
     {
         text.transform.localPosition = new Vector3(text.transform.localPosition.x, 0.0352f, text.transform.localPosition.z);
-        while (true)
+        while (!ModuleSolved)
         {
+            if (text.transform.localPosition.y < -15.0f)
+            {
+                text.transform.localPosition = new Vector3(text.transform.localPosition.x, 0.0352f, text.transform.localPosition.z);
+            }
             var y = text.transform.localPosition.y;
             text.transform.localPosition = new Vector3(text.transform.localPosition.x, y - (textSpeed * Time.deltaTime), text.transform.localPosition.z);
             yield return null;
@@ -727,6 +731,29 @@ public class runonSentence : MonoBehaviour
             ModuleSolved = true;
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
             Module.HandlePass();
+            string[] _solveTexts = { "Yippee!", "W Defuser", ":)", "Hope it was fun"};
+
+            string solveText = _solveTexts[Rnd.Range(0, 4)];
+            text.text = solveText;
+
+            if (solveText.Equals("Yippee!"))
+            {
+                text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.0212f, text.transform.localPosition.z);
+            }
+            if (solveText.Equals("W Defuser"))
+            {
+                text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.031f, text.transform.localPosition.z);
+            }
+            if (solveText.Equals(":)"))
+            {
+                text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.0028f, text.transform.localPosition.z);
+            }
+            if (solveText.Equals("Hope it was fun"))
+            {
+                text.fontSize = 240;
+                text.transform.localPosition = new Vector3(text.transform.localPosition.x, -0.031f, text.transform.localPosition.z);
+            }
+           
             Debug.LogFormat("[Run-On Sentence #{0}] You correctly submitted {1}. Module solved.", ModuleId, inputCell.ToString());
         }
         else
