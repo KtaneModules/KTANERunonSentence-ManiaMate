@@ -783,13 +783,15 @@ public class runonSentence : MonoBehaviour
             ResetButton.OnInteract();
             yield break;
         }
-        m = Regex.Match(command, @"^\s*submit\s+(?<pattern>empty|checkered|striped|filled)\s+(?<shape>circle|square|triangle|cross)\s+(?<color>white|light\s+gray|dark\s+gray|black)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        m = Regex.Match(command, @"^\s*submit\s+(?:(?<p0>empty)|(?<p1>checkered)|(?<p2>striped)|(?<p3>filled))\s+(?:(?<s0>circle)|(?<s1>square)|(?<s2>triangle)|(?<s3>cross))\s+(?:(?<c0>white)|(?<c1>light\s+gray)|(?<c2>dark\s+gray)|(?<c3>black))\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         if (!m.Success)
             yield break;
+
         yield return null;
-        int patternIx = Array.IndexOf(new string[] { "empty", "checkered", "striped", "filled" }, m.Groups["pattern"].Value);
-        int shapeIx = Array.IndexOf(new string[] { "circle", "square", "triangle", "cross" }, m.Groups["shape"].Value);
-        int colorIx = Array.IndexOf(new string[] { "white", "light gray", "dark gray", "black" }, m.Groups["color"].Value);
+        int patternIx = Enumerable.Range(0, 4).First(ix => m.Groups["p" + ix].Success);
+        int shapeIx = Enumerable.Range(0, 4).First(ix => m.Groups["s" + ix].Success);
+        int colorIx = Enumerable.Range(0, 4).First(ix => m.Groups["c" + ix].Success);
+
         PatternButtons[patternIx].OnInteract();
         yield return new WaitForSeconds(0.2f);
         ShapeButtons[shapeIx].OnInteract();
